@@ -17,7 +17,8 @@ public class Home_Stay {
     private String address;
     private String image;
     private double price;
-    private Long status = 0L;
+    @Column(name = "status")
+    private int status = 0;
     @ManyToOne
     private User user;
     @Transient
