@@ -1,7 +1,6 @@
 package com.example.case_md4.service.impl;
 
 import com.example.case_md4.model.Booking;
-import com.example.case_md4.model.Status;
 import com.example.case_md4.repository.IBookingRepository;
 import com.example.case_md4.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ public class BookingService implements IBookingService {
         List<Booking> listBookingById = findAllByHomeStay_Id(booking.getHomeStay().getId());
         minDate = minDate(listBookingById);
         maxDate = maxDate(listBookingById);
+
         if(maxDate !=null && minDate != null){
             for (Booking b : bookingList) {
                 if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
@@ -105,6 +105,11 @@ public class BookingService implements IBookingService {
         }
 
         return maxDate;
+    }
+
+    @Override
+    public List<Booking> findAllByUser_Id(Long id) {
+        return iBookingRepository.findAllByUser_Id(id);
     }
 
 }

@@ -15,4 +15,5 @@ public interface IHomeStayRepository extends JpaRepository<Home_Stay, Long> {
     List<Home_Stay> search(@Param("name") String name,
                            @Param("min") Long min,
                            @Param("max") Long max);
+    List<Home_Stay> findAllByUser_Id(Long id);
 }

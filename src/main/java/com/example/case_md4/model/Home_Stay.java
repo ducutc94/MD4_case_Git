@@ -17,10 +17,9 @@ public class Home_Stay {
     private String address;
     private String image;
     private double price;
+    private Long status = 0L;
     @ManyToOne
     private User user;
-    @ManyToMany
-    private Set<Status> status;
     @Transient
     private MultipartFile multipartFile;
 }
