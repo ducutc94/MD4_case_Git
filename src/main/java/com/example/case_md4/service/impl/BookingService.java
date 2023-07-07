@@ -1,9 +1,10 @@
 package com.example.case_md4.service.impl;
 
 import com.example.case_md4.model.Booking;
-import com.example.case_md4.model.Status;
+
 import com.example.case_md4.repository.IBookingRepository;
 import com.example.case_md4.service.IBookingService;
+import com.example.case_md4.service.IHomeStayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ import java.util.Optional;
 public class BookingService implements IBookingService {
     @Autowired
     private IBookingRepository iBookingRepository;
+
+    @Autowired
+    private IHomeStayService iHomeStayService;
 
     @Override
     public Iterable<Booking> findAll() {
@@ -39,7 +43,8 @@ public class BookingService implements IBookingService {
                 if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
                     if (booking.getStar_date().isBefore(booking.getEnd_date())) {
                         if (booking.getEnd_date().isBefore(minDate) || booking.getStar_date().isAfter(maxDate)) {
-                       return   iBookingRepository.save(booking);
+                        iBookingRepository.save(booking);
+
                         }else {
                             return null;
                         }

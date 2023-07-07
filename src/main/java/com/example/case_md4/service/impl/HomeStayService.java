@@ -82,4 +82,9 @@ public class HomeStayService implements IHomeStayService {
     public List<Home_Stay> search(String name, Long min, Long max) {
         return iHomeStayRepository.search('%'+name+'%',min,max);
     }
+
+    @Override
+    public List<Home_Stay> listHomeStayByStatus(int number) {
+        return iHomeStayRepository.findByStatus(number);
+    }
 }

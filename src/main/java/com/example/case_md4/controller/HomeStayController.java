@@ -1,7 +1,9 @@
 package com.example.case_md4.controller;
 
 import com.example.case_md4.model.Home_Stay;
+import com.example.case_md4.model.User;
 import com.example.case_md4.service.IHomeStayService;
+import com.example.case_md4.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import java.util.Optional;
 public class HomeStayController {
     @Autowired
     private IHomeStayService iHomeStayService;
+    @Autowired
+    private UserService userService;
     @GetMapping
     public ResponseEntity<Iterable<Home_Stay>> findAll(){
         List<Home_Stay> homeStays = (List<Home_Stay>) iHomeStayService.findAll();
@@ -63,5 +67,14 @@ public class HomeStayController {
                                                   @RequestParam(value = "min",required = false,defaultValue = "0") Long min,
                                                   @RequestParam(value = "max",required = false,defaultValue = "9999999999") Long max){
         return new ResponseEntity<>(iHomeStayService.search(name,min,max),HttpStatus.OK);
+    }
+    @GetMapping("/findByStatus")
+    public ResponseEntity<List<Home_Stay>> findByStatus(@RequestParam("number") int number){
+        List<Home_Stay> newHomeStayList = iHomeStayService.listHomeStayByStatus(number);
+        if (newHomeStayList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(newHomeStayList, HttpStatus.OK);
+        }
     }
 }

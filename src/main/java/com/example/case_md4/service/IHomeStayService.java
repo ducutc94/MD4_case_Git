@@ -9,4 +9,6 @@ public interface IHomeStayService extends IGeneralService<Home_Stay> {
     Home_Stay create(Home_Stay homeStay, MultipartFile file);
     Home_Stay update(Home_Stay homeStay, MultipartFile file,Long id);
     List<Home_Stay> search(String name, Long min, Long max);
+    List<Home_Stay> listHomeStayByStatus(int id);
+
 }

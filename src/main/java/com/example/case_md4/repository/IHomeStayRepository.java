@@ -15,4 +15,7 @@ public interface IHomeStayRepository extends JpaRepository<Home_Stay, Long> {
     List<Home_Stay> search(@Param("name") String name,
                            @Param("min") Long min,
                            @Param("max") Long max);
+    @Query(value = "select * from Home_Stay where Home_Stay .status = :number",nativeQuery = true)
+    List<Home_Stay> findByStatus(@Param("number") int number);
+
 }

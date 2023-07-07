@@ -35,4 +35,13 @@ public class UserService implements UserDetailsService {
         }
         return null;
     }
+    public User findOne(Long id){
+        List<User> userList = iUserRepository.findAll();
+        for (User u: userList) {
+                if (u.getId() == id) {
+                    return u;
+                }
+        }
+        return null;
+    }
 }
