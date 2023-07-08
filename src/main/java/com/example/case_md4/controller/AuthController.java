@@ -2,7 +2,9 @@ package com.example.case_md4.controller;
 
 import com.example.case_md4.jwt.service.JwtResponse;
 import com.example.case_md4.jwt.service.JwtService;
+import com.example.case_md4.model.Role;
 import com.example.case_md4.model.User;
+import com.example.case_md4.service.impl.RoleService;
 import com.example.case_md4.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
@@ -30,6 +36,8 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody User user) {
@@ -47,6 +55,11 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody User user) {
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
+        Set<Role> roleSet = new HashSet<>();
+        List<Role> roleList = (List<Role>) roleService.findAll();
+        Role role = roleList.get(1);
+        roleSet.add(role);
+        user.setRoles(roleSet);
         boolean check = userService.add(user);
         if (check) {
             return new ResponseEntity<>(HttpStatus.OK);
