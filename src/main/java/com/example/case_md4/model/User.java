@@ -16,6 +16,6 @@ public class User {
     private String phone;
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     private Set<Role> roles;
 }
