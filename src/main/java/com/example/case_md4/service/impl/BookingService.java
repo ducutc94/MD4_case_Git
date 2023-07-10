@@ -1,7 +1,7 @@
 package com.example.case_md4.service.impl;
 
 import com.example.case_md4.model.Booking;
-
+import com.example.case_md4.model.Home_Stay;
 import com.example.case_md4.repository.IBookingRepository;
 import com.example.case_md4.service.IBookingService;
 import com.example.case_md4.service.IHomeStayService;
@@ -43,8 +43,12 @@ public class BookingService implements IBookingService {
                 if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
                     if (booking.getStar_date().isBefore(booking.getEnd_date())) {
                         if (booking.getEnd_date().isBefore(minDate) || booking.getStar_date().isAfter(maxDate)) {
-                        iBookingRepository.save(booking);
-
+                            int totalDay = totalDay(booking.getEnd_date(),booking.getStar_date());
+                            Home_Stay homeStay = iHomeStayService.findOne(booking.getHomeStay().getId()).get();
+                            double totalPrice = totalDay*(homeStay.getPrice());
+                            booking.setTotal_day(totalDay);
+                            booking.setTotal_price(totalPrice);
+                       return   iBookingRepository.save(booking);
                         }else {
                             return null;
                         }
@@ -56,6 +60,11 @@ public class BookingService implements IBookingService {
                 }
             }
         }else if(booking.getStar_date().isBefore(booking.getEnd_date())){
+            int totalDay = totalDay(booking.getEnd_date(),booking.getStar_date());
+            Home_Stay homeStay = iHomeStayService.findOne(booking.getHomeStay().getId()).get();
+            double totalPrice = totalDay*(homeStay.getPrice());
+            booking.setTotal_day(totalDay);
+            booking.setTotal_price(totalPrice);
             return iBookingRepository.save(booking);
         }else {
             return null;
@@ -112,4 +121,13 @@ public class BookingService implements IBookingService {
         return maxDate;
     }
 
+    @Override
+    public List<Booking> findAllByUser_Id(Long id) {
+        return iBookingRepository.findAllByUser_Id(id);
+    }
+
+    @Override
+    public int totalDay(LocalDate end_date, LocalDate star_date) {
+        return iBookingRepository.totalDay(end_date,star_date);
+    }
 }

@@ -25,5 +25,4 @@ public class Booking {
     private User user;
     @ManyToOne
     private Action action;
-
 }
