@@ -5,6 +5,8 @@ import com.example.case_md4.repository.IHomeStayRepository;
 import com.example.case_md4.service.IHomeStayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,7 +51,7 @@ public class HomeStayService implements IHomeStayService {
                 FileCopyUtils.copy(file.getBytes(), new File(upLoad + imagePart));
                 homeStay.setImage(imagePart);
             } else {
-                homeStay.setImage("C:\\Users\\Tien\\Desktop\\Codegym\\picture");
+                homeStay.setImage("C:\\Users\\Tien\\Desktop\\Views\\image\\tải xuống.jpg");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,5 +83,15 @@ public class HomeStayService implements IHomeStayService {
     @Override
     public List<Home_Stay> search(String name, Long min, Long max) {
         return iHomeStayRepository.search('%'+name+'%',min,max);
+    }
+
+    @Override
+    public Page<Home_Stay> searchPage(String name, Long min, Long max, Pageable pageable) {
+        return iHomeStayRepository.search('%'+name+'%',min,max,pageable);
+    }
+
+    @Override
+    public Page<Home_Stay> findAll(Pageable pageable) {
+        return iHomeStayRepository.findAll(pageable);
     }
 }

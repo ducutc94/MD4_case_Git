@@ -1,6 +1,7 @@
 package com.example.case_md4.service.impl;
 
 import com.example.case_md4.model.Booking;
+import com.example.case_md4.model.Home_Stay;
 import com.example.case_md4.repository.IBookingRepository;
 import com.example.case_md4.service.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class BookingService implements IBookingService {
     @Autowired
     private IBookingRepository iBookingRepository;
+    @Autowired
+    private HomeStayService homeStayService;
 
     @Override
     public Iterable<Booking> findAll() {
@@ -39,6 +42,11 @@ public class BookingService implements IBookingService {
                 if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
                     if (booking.getStar_date().isBefore(booking.getEnd_date())) {
                         if (booking.getEnd_date().isBefore(minDate) || booking.getStar_date().isAfter(maxDate)) {
+                            int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
+                            Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
+                            double totalPrice = totalDate*homeStay.getPrice();
+                            booking.setTotal_price(totalPrice);
+                            booking.setTotal_day(totalDate);
                        return   iBookingRepository.save(booking);
                         }else {
                             return null;
@@ -51,6 +59,11 @@ public class BookingService implements IBookingService {
                 }
             }
         }else if(booking.getStar_date().isBefore(booking.getEnd_date())){
+            int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
+            Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
+            double totalPrice = totalDate*homeStay.getPrice();
+            booking.setTotal_price(totalPrice);
+            booking.setTotal_day(totalDate);
             return iBookingRepository.save(booking);
         }else {
             return null;
@@ -110,6 +123,11 @@ public class BookingService implements IBookingService {
     @Override
     public List<Booking> findAllByUser_Id(Long id) {
         return iBookingRepository.findAllByUser_Id(id);
+    }
+
+    @Override
+    public int totalDate(LocalDate endDate, LocalDate startDate) {
+        return iBookingRepository.totalDate(endDate,startDate);
     }
 
 }

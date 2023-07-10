@@ -28,14 +28,12 @@ public class RoleService implements IRoleService {
 
     @Override
     public Role save(Role role) {
-        List<Role> roleList = (List<Role>) findAll();
-        for (Role r:roleList
-             ) {
-            if(!r.getName().equals(role.getName())){
-                roleList.add(role);
-            }
+        Optional<Role> role1 = findOne(role.getId());
+        if(role1.isPresent()){
+            return null;
+        }else {
+            return iRoleRepository.save(role);
         }
-        return null;
     }
 
     @Override

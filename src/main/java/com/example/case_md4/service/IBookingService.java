@@ -10,4 +10,5 @@ public interface IBookingService extends  IGeneralService<Booking> {
     LocalDate minDate(List<Booking> bookingList);
     LocalDate maxDate(List<Booking> bookingList);
     List<Booking> findAllByUser_Id(Long id);
+    int totalDate(LocalDate endDate,LocalDate startDate);
 }
