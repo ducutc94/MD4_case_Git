@@ -14,7 +14,7 @@ public class Booking {
     private Long id;
     private LocalDate star_date;
     private LocalDate end_date;
-    private int isBill;
+    private int isBill =1;
     @Transient
     private int total_day;
     @Transient

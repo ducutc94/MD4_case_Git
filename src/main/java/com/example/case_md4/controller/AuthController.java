@@ -61,6 +61,7 @@ public class AuthController {
         roleSet.add(role);
         user.setRoles(roleSet);
         boolean check = userService.add(user);
+
         if (check) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

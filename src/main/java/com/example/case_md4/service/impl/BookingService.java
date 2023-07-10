@@ -4,8 +4,9 @@ import com.example.case_md4.model.Booking;
 import com.example.case_md4.model.Home_Stay;
 import com.example.case_md4.repository.IBookingRepository;
 import com.example.case_md4.service.IBookingService;
-import com.example.case_md4.service.IHomeStayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,9 +17,8 @@ import java.util.Optional;
 public class BookingService implements IBookingService {
     @Autowired
     private IBookingRepository iBookingRepository;
-
     @Autowired
-    private IHomeStayService iHomeStayService;
+    private HomeStayService homeStayService;
 
     @Override
     public Iterable<Booking> findAll() {
@@ -43,11 +43,11 @@ public class BookingService implements IBookingService {
                 if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
                     if (booking.getStar_date().isBefore(booking.getEnd_date())) {
                         if (booking.getEnd_date().isBefore(minDate) || booking.getStar_date().isAfter(maxDate)) {
-                            int totalDay = totalDay(booking.getEnd_date(),booking.getStar_date());
-                            Home_Stay homeStay = iHomeStayService.findOne(booking.getHomeStay().getId()).get();
-                            double totalPrice = totalDay*(homeStay.getPrice());
-                            booking.setTotal_day(totalDay);
+                            int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
+                            Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
+                            double totalPrice = totalDate*homeStay.getPrice();
                             booking.setTotal_price(totalPrice);
+                            booking.setTotal_day(totalDate);
                        return   iBookingRepository.save(booking);
                         }else {
                             return null;
@@ -60,11 +60,11 @@ public class BookingService implements IBookingService {
                 }
             }
         }else if(booking.getStar_date().isBefore(booking.getEnd_date())){
-            int totalDay = totalDay(booking.getEnd_date(),booking.getStar_date());
-            Home_Stay homeStay = iHomeStayService.findOne(booking.getHomeStay().getId()).get();
-            double totalPrice = totalDay*(homeStay.getPrice());
-            booking.setTotal_day(totalDay);
+            int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
+            Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
+            double totalPrice = totalDate*homeStay.getPrice();
             booking.setTotal_price(totalPrice);
+            booking.setTotal_day(totalDate);
             return iBookingRepository.save(booking);
         }else {
             return null;
@@ -127,7 +127,8 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public int totalDay(LocalDate end_date, LocalDate star_date) {
-        return iBookingRepository.totalDay(end_date,star_date);
+    public int totalDate(LocalDate endDate, LocalDate startDate) {
+        return iBookingRepository.totalDate(endDate,startDate);
     }
+
 }

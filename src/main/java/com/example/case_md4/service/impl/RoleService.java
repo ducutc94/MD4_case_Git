@@ -4,14 +4,20 @@ import com.example.case_md4.model.Role;
 import com.example.case_md4.repository.IRoleRepository;
 import com.example.case_md4.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Service
-public class RoleService implements IRoleService{
+public class RoleService implements IRoleService {
     @Autowired
     private IRoleRepository iRoleRepository;
+
     @Override
     public Iterable<Role> findAll() {
         return iRoleRepository.findAll();
@@ -24,20 +30,21 @@ public class RoleService implements IRoleService{
 
     @Override
     public Role save(Role role) {
-        List<Role> roleList = (List<Role>) findAll();
-        for (Role r: roleList) {
-            if (!r.getName().equals(role.getName())){
-                roleList.add(role);
-            }
+        Optional<Role> role1 = findOne(role.getId());
+        if(role1.isPresent()){
+            return null;
+        }else {
+            return iRoleRepository.save(role);
         }
-        return null;
     }
 
     @Override
     public void remove(Long id) {
         Optional<Role> roleOptional = findOne(id);
-        if (roleOptional.isPresent()){
+        if(roleOptional.isPresent()){
             iRoleRepository.deleteById(id);
         }
+
     }
+
 }

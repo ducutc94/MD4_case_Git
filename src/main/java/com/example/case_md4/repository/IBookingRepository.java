@@ -13,6 +13,8 @@ import java.util.List;
 public interface IBookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findAllByHomeStay_Id(Long id);
     List<Booking> findAllByUser_Id(Long id);
-    @Query(value = "select datediff(:end_date,:star_date)",nativeQuery = true)
-    int totalDay(@Param("end_date") LocalDate end_date,@Param("star_date") LocalDate star_date);
+
+    @Query(value = "select datediff(:endDate,:startDate)",nativeQuery = true)
+    int totalDate(@Param("endDate")LocalDate endDate,
+                  @Param("startDate")LocalDate startDate);
 }

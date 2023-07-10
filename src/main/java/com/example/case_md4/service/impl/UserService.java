@@ -22,15 +22,14 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean add(User user) {
-        User user1 = findByUsername(user.getUsername());
-        if (user1 != null){
+        User user1 =findByUsername(user.getUsername());
+        if(user1 != null){
             return false;
         }else {
             iUserRepository.save(user);
             return true;
         }
     }
-
 
     public UserDetails loadUserByUsername(String username) {
         List<User> users = iUserRepository.findAll();
@@ -41,12 +40,13 @@ public class UserService implements UserDetailsService {
         }
         return null;
     }
-    public User findOne(Long id){
-        List<User> userList = iUserRepository.findAll();
-        for (User u: userList) {
-                if (u.getId() == id) {
-                    return u;
-                }
+
+    public User findOne(Long id) {
+        List<User> users = iUserRepository.findAll();
+        for (User u : users) {
+            if (u.getId() == id) {
+                return u;
+            }
         }
         return null;
     }
