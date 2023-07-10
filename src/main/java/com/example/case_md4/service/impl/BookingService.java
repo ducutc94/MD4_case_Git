@@ -122,13 +122,23 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public List<Booking> findAllByUser_Id(Long id) {
-        return iBookingRepository.findAllByUser_Id(id);
+    public Page<Booking> findAllByUser_Id(Long id,Pageable pageable) {
+        return iBookingRepository.findAllByUser_Id(id,pageable);
     }
 
     @Override
     public int totalDate(LocalDate endDate, LocalDate startDate) {
         return iBookingRepository.totalDate(endDate,startDate);
+    }
+
+    @Override
+    public Page<Booking> findAll(Pageable pageable) {
+        return iBookingRepository.findAll(pageable);
+    }
+
+    @Override
+    public Booking updateIsBill(Booking booking) {
+        return iBookingRepository.save(booking);
     }
 
 }

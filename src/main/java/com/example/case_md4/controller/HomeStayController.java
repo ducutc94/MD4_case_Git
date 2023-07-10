@@ -52,12 +52,12 @@ public class HomeStayController {
         }
     }
     @PostMapping
-    public ResponseEntity<Home_Stay> create(@RequestPart("file")MultipartFile multipartFile,
+    public ResponseEntity<Home_Stay> create(@RequestPart(value = "file",required = false)MultipartFile multipartFile,
                                             @RequestPart("home_stay") Home_Stay homeStay){
         return new ResponseEntity<>(iHomeStayService.create(homeStay,multipartFile),HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Home_Stay> update(@RequestPart("file")MultipartFile multipartFile,
+    public ResponseEntity<Home_Stay> update(@RequestPart(value = "file",required = false)MultipartFile multipartFile,
                                             @RequestPart("home_stay") Home_Stay homeStay,@PathVariable Long id){
         if (iHomeStayService.findOne(id).isPresent()){
             return new ResponseEntity<>(iHomeStayService.update(homeStay,multipartFile,id),HttpStatus.OK);
