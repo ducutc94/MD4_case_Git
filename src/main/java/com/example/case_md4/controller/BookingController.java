@@ -5,6 +5,9 @@ import com.example.case_md4.model.User;
 import com.example.case_md4.service.IBookingService;
 import com.example.case_md4.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,15 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<Iterable<Booking>> findAll(){
         List<Booking> bookingList = (List<Booking>) iBookingService.findAll();
+        if(bookingList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(bookingList,HttpStatus.OK);
+        }
+    }
+    @GetMapping("/page")
+    public ResponseEntity<Page<Booking>> findAllByPage(@PageableDefault(value = 6)Pageable pageable){
+        Page<Booking> bookingList =  iBookingService.findAll(pageable);
         if(bookingList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else {
@@ -76,13 +88,27 @@ public class BookingController {
         }
     }
     @GetMapping("/find-by-user/{id}")
-    public ResponseEntity<List<Booking>> findByUser(@PathVariable Long id){
+    public ResponseEntity<Page<Booking>> findByUser(@PathVariable Long id,@PageableDefault(value = 6)Pageable pageable){
         User user = userService.findOne(id);
         if(user != null){
-            return new ResponseEntity<>(iBookingService.findAllByUser_Id(id),HttpStatus.OK);
+            return new ResponseEntity<>(iBookingService.findAllByUser_Id(id,pageable),HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Booking> updateIsBill(@PathVariable Long id){
+        Optional<Booking> bookingOptional = iBookingService.findOne(id);
+
+        if(bookingOptional.isPresent()){
+          Booking booking =  bookingOptional.get();
+          booking.setId(id);
+          booking.setIsBill(0);
+          iBookingService.updateIsBill(booking);
+                return new ResponseEntity<>(booking,HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
     }
 
 }
