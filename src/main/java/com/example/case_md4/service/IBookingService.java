@@ -12,7 +12,9 @@ public interface IBookingService extends  IGeneralService<Booking> {
     LocalDate minDate(List<Booking> bookingList);
     LocalDate maxDate(List<Booking> bookingList);
     Page<Booking> findAllByUser_Id(Long id,Pageable pageable);
-    int totalDate(LocalDate endDate,LocalDate startDate);
     Page<Booking> findAll(Pageable pageable);
+    int totalDate(LocalDate endDate,LocalDate startDate);
     Booking updateIsBill(Booking booking);
+    Booking totalDatePrice(Booking booking);
+    List<Booking> bookingList(List<Booking> bookingList);
 }

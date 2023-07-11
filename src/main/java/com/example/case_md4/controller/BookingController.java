@@ -24,7 +24,7 @@ public class BookingController {
     @Autowired
     private UserService userService;
     @GetMapping
-    public ResponseEntity<Iterable<Booking>> findAll(){
+    public ResponseEntity<List<Booking>> findALL(){
         List<Booking> bookingList = (List<Booking>) iBookingService.findAll();
         if(bookingList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -34,12 +34,7 @@ public class BookingController {
     }
     @GetMapping("/page")
     public ResponseEntity<Page<Booking>> findAllByPage(@PageableDefault(value = 6)Pageable pageable){
-        Page<Booking> bookingList =  iBookingService.findAll(pageable);
-        if(bookingList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
-            return new ResponseEntity<>(bookingList,HttpStatus.OK);
-        }
+            return new ResponseEntity<>(iBookingService.findAll(pageable),HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Booking>> findOne(@PathVariable("id") Long id){

@@ -34,7 +34,7 @@ public class HomeStayController {
         }
     }
     @GetMapping("/page")
-    public ResponseEntity<Page<Home_Stay>> findAllByPage(@PageableDefault (value = 3)Pageable pageable){
+    public ResponseEntity<Page<Home_Stay>> findAllByPage(@PageableDefault (value = 6)Pageable pageable){
         Page<Home_Stay> homeStays = iHomeStayService.findAll(pageable);
         if (homeStays.isEmpty()){
             return  new ResponseEntity<>(HttpStatus.ACCEPTED);

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,13 @@ public class BookingService implements IBookingService {
 
     @Override
     public Iterable<Booking> findAll() {
-        return iBookingRepository.findAll();
+        List<Booking> bookingList = bookingList(iBookingRepository.findAll());
+        if(bookingList.isEmpty()){
+            return null;
+        }else {
+            return bookingList;
+        }
+
     }
 
     @Override
@@ -38,17 +45,11 @@ public class BookingService implements IBookingService {
         List<Booking> listBookingById = findAllByHomeStay_Id(booking.getHomeStay().getId());
         minDate = minDate(listBookingById);
         maxDate = maxDate(listBookingById);
-
         if(maxDate !=null && minDate != null){
             for (Booking b : bookingList) {
                 if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
                     if (booking.getStar_date().isBefore(booking.getEnd_date())) {
                         if (booking.getEnd_date().isBefore(minDate) || booking.getStar_date().isAfter(maxDate)) {
-                            int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
-                            Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
-                            double totalPrice = totalDate*homeStay.getPrice();
-                            booking.setTotal_price(totalPrice);
-                            booking.setTotal_day(totalDate);
                        return   iBookingRepository.save(booking);
                         }else {
                             return null;
@@ -61,11 +62,6 @@ public class BookingService implements IBookingService {
                 }
             }
         }else if(booking.getStar_date().isBefore(booking.getEnd_date())){
-            int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
-            Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
-            double totalPrice = totalDate*homeStay.getPrice();
-            booking.setTotal_price(totalPrice);
-            booking.setTotal_day(totalDate);
             return iBookingRepository.save(booking);
         }else {
             return null;
@@ -118,7 +114,6 @@ public class BookingService implements IBookingService {
         }else {
             return  null;
         }
-
         return maxDate;
     }
 
@@ -128,18 +123,39 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public int totalDate(LocalDate endDate, LocalDate startDate) {
-        return iBookingRepository.totalDate(endDate,startDate);
-    }
-
-    @Override
     public Page<Booking> findAll(Pageable pageable) {
         return iBookingRepository.findAll(pageable);
     }
 
     @Override
+    public int totalDate(LocalDate endDate, LocalDate startDate) {
+        return iBookingRepository.totalDate(endDate,startDate);
+    }
+
+
+
+    @Override
     public Booking updateIsBill(Booking booking) {
         return iBookingRepository.save(booking);
+    }
+
+    @Override
+    public Booking totalDatePrice(Booking booking) {
+        int totalDate = totalDate(booking.getEnd_date(),booking.getStar_date());
+        Home_Stay homeStay = homeStayService.findOne(booking.getHomeStay().getId()).get();
+        double totalPrice = totalDate*homeStay.getPrice();
+        booking.setTotal_price(totalPrice);
+        booking.setTotal_day(totalDate);
+        return booking;
+    }
+
+    @Override
+    public List<Booking> bookingList(List<Booking> bookingList) {
+        List<Booking> bookingList1AfterTotal =new ArrayList<>();
+        for (Booking b:bookingList) {
+            bookingList1AfterTotal.add(totalDatePrice(b));
+        }
+        return bookingList1AfterTotal;
     }
 
 }

@@ -16,7 +16,6 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findAllByHomeStay_Id(Long id);
     Page<Booking> findAllByUser_Id(Long id,Pageable pageable);
     Page<Booking> findAll(Pageable pageable);
-
     @Query(value = "select datediff(:endDate,:startDate)",nativeQuery = true)
     int totalDate(@Param("endDate")LocalDate endDate,
                   @Param("startDate")LocalDate startDate);
