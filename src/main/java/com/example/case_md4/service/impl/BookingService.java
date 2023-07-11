@@ -140,5 +140,4 @@ public class BookingService implements IBookingService {
     public Booking updateIsBill(Booking booking) {
         return iBookingRepository.save(booking);
     }
-
 }

@@ -5,7 +5,11 @@ import com.example.case_md4.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin("*")
@@ -23,7 +27,10 @@ public class UserController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id,@RequestBody User user){
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Validated User user, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()){
+            throw new Exception("/404");
+        }
         User checkUser = userService.findOne(id);
         if(checkUser!=null){
             user.setId(id);

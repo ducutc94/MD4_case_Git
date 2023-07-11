@@ -24,10 +24,10 @@ public class UserService implements UserDetailsService {
     public boolean add(User user) {
         User user1 =findByUsername(user.getUsername());
         if(user1 != null){
+            return false;
+        }else {
             iUserRepository.save(user);
             return true;
-        }else {
-          return false;
         }
     }
 
