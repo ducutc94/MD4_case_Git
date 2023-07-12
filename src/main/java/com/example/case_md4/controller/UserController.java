@@ -30,7 +30,7 @@ public class UserController {
             user.setUsername(checkUser.getUsername());
             user.setPassword(checkUser.getPassword());
             user.setRoles(checkUser.getRoles());
-            userService.add(user);
+           userService.update(user);
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);

@@ -30,6 +30,9 @@ public class UserService implements UserDetailsService {
           return true;
         }
     }
+    public User update(User user){
+        return iUserRepository.save(user);
+    }
 
     public UserDetails loadUserByUsername(String username) {
         List<User> users = iUserRepository.findAll();

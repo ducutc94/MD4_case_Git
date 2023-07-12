@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -89,6 +90,7 @@ public class HomeStayService implements IHomeStayService {
     public Page<Home_Stay> searchPage(String name, Long min, Long max, Pageable pageable) {
         return iHomeStayRepository.search('%'+name+'%',min,max,pageable);
     }
+
 
     @Override
     public Page<Home_Stay> findAll(Pageable pageable) {

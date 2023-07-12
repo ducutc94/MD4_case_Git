@@ -105,5 +105,10 @@ public class BookingController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
     }
+    @GetMapping("/page-admin")
+    public ResponseEntity<Page<Booking>> listAdmin(@PageableDefault(value = 6)Pageable pageable){
+        return new ResponseEntity<>(iBookingService.listAdmin(pageable),HttpStatus.OK);
+    }
+
 
 }
