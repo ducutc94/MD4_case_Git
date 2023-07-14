@@ -1,15 +1,11 @@
 package com.example.case_md4.service.impl;
-
 import com.example.case_md4.model.Role;
 import com.example.case_md4.repository.IRoleRepository;
 import com.example.case_md4.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 @Service
 public class RoleService implements IRoleService {

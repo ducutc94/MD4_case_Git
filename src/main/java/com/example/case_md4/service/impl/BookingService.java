@@ -1,5 +1,4 @@
 package com.example.case_md4.service.impl;
-
 import com.example.case_md4.model.Booking;
 import com.example.case_md4.model.Home_Stay;
 import com.example.case_md4.repository.IBookingRepository;
@@ -8,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Service
 public class BookingService implements IBookingService {
@@ -40,12 +38,10 @@ public class BookingService implements IBookingService {
     public Booking save(Booking booking) {
         LocalDate minDate;
         LocalDate maxDate;
-        List<Booking> bookingList = (List<Booking>) findAll();
         List<Booking> listBookingById = findAllByHomeStay_Id(booking.getHomeStay().getId());
-        listBookingById.sort(Comparator.comparing(o->o.getStar_date()));
+        listBookingById.sort(Comparator.comparing(Booking::getStar_date));
         minDate = minDate(listBookingById);
         maxDate = maxDate(listBookingById);
-
         if (maxDate != null && minDate != null) {
             if(booking.getStar_date().isBefore(booking.getEnd_date())){
                 if(listBookingById.size()<=1){
@@ -60,23 +56,9 @@ public class BookingService implements IBookingService {
                            }
                        }return null;
                 }
-
             }else {
                 return null;
             }
-//            for (Booking b : bookingList) {
-//                if (b.getHomeStay().getId() == booking.getHomeStay().getId()) {
-//                        for (int i = 0; i < listBookingById.size(); i++) {
-//                            if(booking.getEnd_date().isBefore(listBookingById.get(i+1).getStar_date())&&
-//                            booking.getStar_date().isAfter(listBookingById.get(0).getEnd_date())){
-//                                return iBookingRepository.save(booking);
-//                            }
-//                        }return null;
-//
-//                } else if (booking.getStar_date().isBefore(booking.getEnd_date())) {
-//                    return iBookingRepository.save(booking);
-//                }
-//            }
         }
         else if (booking.getStar_date().isBefore(booking.getEnd_date())) {
             return iBookingRepository.save(booking);
@@ -102,7 +84,7 @@ public class BookingService implements IBookingService {
 
     @Override
     public LocalDate minDate(List<Booking> bookingList) {
-        LocalDate minDate = null;
+        LocalDate minDate ;
         if (!bookingList.isEmpty()) {
             minDate = bookingList.get(0).getStar_date();
             for (int i = 1; i < bookingList.size(); i++) {
@@ -119,7 +101,7 @@ public class BookingService implements IBookingService {
 
     @Override
     public LocalDate maxDate(List<Booking> bookingList) {
-        LocalDate maxDate = null;
+        LocalDate maxDate ;
         if (!bookingList.isEmpty()) {
             maxDate = bookingList.get(0).getEnd_date();
             for (int i = 1; i < bookingList.size(); i++) {
@@ -150,8 +132,8 @@ public class BookingService implements IBookingService {
 
 
     @Override
-    public Booking updateIsBill(Booking booking) {
-        return iBookingRepository.save(booking);
+    public void updateIsBill(Booking booking) {
+        iBookingRepository.save(booking);
     }
 
     @Override
@@ -176,12 +158,6 @@ public class BookingService implements IBookingService {
     @Override
     public Page<Booking> listAdmin(Pageable pageable) {
         return iBookingRepository.findAllBookingPage(pageable);
-    }
-
-    @Override
-    public List<Booking> listSort(List<Booking> bookingList) {
-
-        return null;
     }
 
     @Override

@@ -27,15 +27,4 @@ public interface IHomeStayRepository extends JpaRepository<Home_Stay, Long> {
     Page<Home_Stay> search(@Param("name") String name,
                            @Param("min") Long min,
                            @Param("max") Long max,Pageable pageable);
-//    @Query(value = "select distinct * from home_stay inner join booking on home_stay.id = booking.home_stay_id" +
-//            " where (home_stay.address like LOWER(:name) and (home_stay.price >= :min and home_stay.price <= :max) " +
-//            "and (:start_day > booking.end_date or :end_day < booking.star_date)) " +
-//            "or (home_stay.address like LOWER(:name) and (home_stay.price >= :min and home_stay.price <= :max) " +
-//            "and (:start_day > booking.end_date or :end_day < booking.star_date))",nativeQuery = true)
-//    Page<Home_Stay> fndTer(@Param("name") String name,
-//                               @Param("min") Long min,
-//                               @Param("max") Long max,
-//                               @Param("start_day") String start_day,
-//                               @Param("end_day") String end_day,
-//                               Pageable pageable);
 }

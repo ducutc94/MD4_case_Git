@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Data
@@ -17,7 +16,6 @@ public class Home_Stay {
     private String address;
     private String image;
     private double price;
-    @Column(name = "status")
     private int status = 0;
     @ManyToOne
     private User user;

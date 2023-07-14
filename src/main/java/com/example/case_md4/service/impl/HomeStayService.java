@@ -1,5 +1,4 @@
 package com.example.case_md4.service.impl;
-
 import com.example.case_md4.model.Home_Stay;
 import com.example.case_md4.repository.IHomeStayRepository;
 import com.example.case_md4.service.IHomeStayService;
@@ -10,10 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Service

@@ -14,11 +14,10 @@ public interface IBookingService extends  IGeneralService<Booking> {
     Page<Booking> findAllByUser_Id(Long id,Pageable pageable);
     Page<Booking> findAll(Pageable pageable);
     int totalDate(LocalDate endDate,LocalDate startDate);
-    Booking updateIsBill(Booking booking);
+    void updateIsBill(Booking booking);
     Booking totalDatePrice(Booking booking);
     List<Booking> bookingList(List<Booking> bookingList);
     Page<Booking> listAdmin(Pageable pageable);
-    List<Booking> listSort(List<Booking> bookingList);
     Booking update(Booking booking);
 
 }
