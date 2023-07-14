@@ -52,7 +52,7 @@ public class HomeStayService implements IHomeStayService {
                 FileCopyUtils.copy(file.getBytes(), new File(upLoad + imagePart));
                 homeStay.setImage(imagePart);
             } else {
-                homeStay.setImage("C:\\Users\\Tien\\Desktop\\Views\\image\\tải xuống.jpg");
+                homeStay.setImage("C:\\Users\\Tien\\Desktop\\Views\\image\\images (3).jpg");
             }
         } catch (IOException e) {
             e.printStackTrace();

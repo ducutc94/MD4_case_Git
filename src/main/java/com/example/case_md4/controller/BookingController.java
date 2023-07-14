@@ -65,7 +65,8 @@ public class BookingController {
 
         if(bookingOptional.isPresent()){
             booking.setId(id);
-            if(iBookingService.save(booking)!=null){
+            booking.setIsBill(bookingOptional.get().getIsBill());
+            if(iBookingService.update(booking)!=null){
                 return new ResponseEntity<>(HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

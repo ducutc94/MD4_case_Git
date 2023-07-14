@@ -19,5 +19,6 @@ public interface IBookingService extends  IGeneralService<Booking> {
     List<Booking> bookingList(List<Booking> bookingList);
     Page<Booking> listAdmin(Pageable pageable);
     List<Booking> listSort(List<Booking> bookingList);
+    Booking update(Booking booking);
 
 }

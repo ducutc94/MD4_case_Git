@@ -184,4 +184,9 @@ public class BookingService implements IBookingService {
         return null;
     }
 
+    @Override
+    public Booking update(Booking booking) {
+        return iBookingRepository.save(booking);
+    }
+
 }
